@@ -1,0 +1,50 @@
+version: "3.1"
+services:
+  test_dbservice:
+    container_name: testpostgre
+    image:  mdillon/postgis
+    environment:
+      - POSTGRES_USER=devel
+      - POSTGRES_PASSWORD=devel
+      - POSTGRES_DB=test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      testnet:
+
+  testapp:
+    container_name: testapp
+    environment:
+      - DATABASE_HOST=test_dbservice
+      - DATABASE_NAME=test_db
+      - DATABASE_PASSWORD=devel
+      - DATABASE_USER=devel
+      - DATABASE_PORT=5432
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: testimage:v1
+    ports:
+      - "8000:8000"
+    volumes:
+      - venv:/application/venv
+      - /Users/vishvajit/codes/study/learn/cidjango:/application/cidjango
+    tty: true
+    depends_on:
+      - test_dbservice
+    networks:
+      testnet:
+    # command: >
+    #   bash -c "pip3.7 install -r /application/cidjango/requirements.txt
+    #   && python3.7 /application/cidjango/manage.py runserver 0.0.0.0:8000"
+
+# Persistent volumes
+volumes:
+  venv:
+  pgdata:
+
+networks:
+  testnet:
+    external: true
