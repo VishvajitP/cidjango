@@ -13,7 +13,6 @@ else
     export CLEANED_DB_LOC_HOST='127.0.0.1'
     export CLEANED_DB_LOC_NAME='test_db'
 
-    # Override settings for Unhaggle project:
     export DATABASE_USER="${CLEANED_DB_LOC_USER}"
     export DATABASE_PASSWORD="${CLEANED_DB_LOC_PASS}"
     export DATABASE_HOST="${CLEANED_DB_LOC_HOST}"
